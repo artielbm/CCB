@@ -1,0 +1,40 @@
+# Keizer/Leslie: reduced open-cell model 
+# Parameter values slightly modified from orignal paper.
+
+#Two figs generated: 
+#(1) osc_sympn.ps: jin=1.5 for 60<t<400 and jin=0.3 otherwise
+#(2) bif_jin.ps:   jin=0.1 to jin=4.5
+
+
+% XPP parameters
+@ meth=cvode, dtmax=1, dt=0.05, total=400, maxstor=1000000
+@ bounds=100000000, xp=w,  yp=w, toler=1.0e-6, atoler=1.0e-6
+@ xlo=0, xhi=400, ylo=0, yhi=2.5
+
+C(0)=0.2, Cf(0)=1.
+
+params fi=0.01,k3=0.2
+params ka=0.4,kb=0.6,kc=0.1,kcm=0.01
+params vout=5, kout=0.6, jin=1.5
+#Original values
+#params kap=1500, kam=28.8, kbp=1500, kbm=385.9, kcp=1.75, kcm=0.175
+
+#  orginal small store
+#params v1=5,v2=0.15,Cf=1.2,c1=0.02,v3=100
+ params v3=100,v13=0.05,v23=0.002,c1=0.02
+
+# orginal large store
+#params v1=40,v2=0.5,Cf=10,c1=0.15,v3=1000
+#params v3=1000,v13=0.04,v23=0.0005,c1=0.15
+
+winf=(1+(ka/C)^4+(C/kb)^3)/(1+(1/kc)+(ka/C)^4+(C/kb)^3)
+Cas=(Cf-C)/c1
+tau(winf)=winf/kcm
+R=winf*(1+(C/kb)^3)/(1+(ka/C)^4 + (C/kb)^3)
+
+dC/dt=fi*(v3*((v13*R+v23)*(Cas-C)-C^2/(C^2+k3^2))-vout*C^2/(C^2+kout^2)+jin)
+dCf/dt=fi*(jin-vout*C^2/(C^2+kout^2))
+
+aux R=winf*(1+(C/kb)^3)/(1+(ka/C)^4 + (C/kb)^3)
+
+done 

@@ -1,0 +1,27 @@
+#Equations 1-4 for Keizer-Levine
+
+# init pc1=0.2, po1=0.3, po2=0.2
+# initial conditions should correspond to c=0.1
+init pc1=0.912, po1=0.00475, po2=1.846e-5
+
+params cinit=0.35, cfinal=0.7, tjump=2
+# change tjump or cfinal to eliminate adaptation
+params kap=1500, kam=28.8, kbp=1500, kbm=385.9, kcp=1.75, kcm=0.1
+% Possibly want this (and changed IC's) (gives w(0)=0.963 as in KL App. A):
+% params kap=1500, kam=38.4, kbp=1500, kbm=96.0, kcp=1.75, kcm=0.175
+% Implies (using their ka/kb/kc definition):
+params ka=0.4, kb=0.4, kc=0.1
+
+c = cinit + (cfinal - cinit)*heav(t-tjump)
+
+dpc1/dt=kam*po1-kap*c^4*pc1
+dpo1/dt=kap*c^4*pc1-kam*po1+kbm*po2-kbp*c^3*po1+kcm*(1-po1-po2-pc1)-kcp*po1
+dpo2/dt=kbp*c^3*po1-kbm*po2
+#dpc2/dt=kcp*po1-kcm*pc2
+
+aux po=po1+po2
+aux pc2=1-po1-po2-pc1
+
+@ dt=0.001, total=10.0, njmp=5, yp=po, xlo=0.0, xhi=10.0, ylo=0.0, yhi=0.5, maxstor=10000
+
+done 

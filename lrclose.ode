@@ -1,0 +1,31 @@
+#  Li-Rinzel closed-cell model .ode file.
+
+# Used for Figs. 8, 9, and 10B (bifurcation diagrams and nullclines)
+
+#  Produced 3 figs: lr_bifip3(a=2), lr_bifct(i=0.9), lrclose
+#
+# The equations
+dc/dt= (l+p*act(i,c)*inh(h))*(a-cp*c)-erp(c)
+dh/dt= a2*(din-(c+din)*h)
+#
+# The functions
+act(i,c)=(i*c/(c+dac)/(i+1))**3
+inh(h)=h*h*h
+erp(c)=ver*c*c/(ker*ker+c*c)
+#
+# The parameters
+params i=0.6,a=2,l=0.005,p=360,cp=1.185,a2=0.5
+params dac=0.4,din=0.4,ver=1,ker=0.2,
+
+#
+# The initial conditions
+c(0)=0.2
+h(0)=0.8
+#
+@ TOTAL=30,DT=.02,xlo=0,xhi=2,ylo=0,yhi=1.5
+@ xplot=c,yplot=h
+@ dsmin=1e-5,dsmax=.1,parmin=-.5,parmax=.5,autoxmin=-.5,autoxmax=.5
+@ autoymax=.4,autoymin=-.5
+set vvst {xplot=c,yplot=h,xlo=0,xhi=1.5,ylo=0,yhi=1.5,total=100 \
+	dt=.01,meth=qualrk}
+done

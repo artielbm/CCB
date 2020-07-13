@@ -1,0 +1,51 @@
+#  Li-Rinzel closed-cell model .ode file.
+
+# Dimensional version corresponding to Eqs. 5.42, 5.43
+
+# Used for Figs. 8, 9, and 10B (bifurcation diagrams and nullclines)
+
+#  Produced 3 figs: lr_bifip3(a=2), lr_bifct(i=0.9), lrclose
+#
+# The equations
+
+dC/dt = fi/Vi*( (L + P*( (I*C*h)/( (I+Ki)*(C+Ka) ) )^3 )*(Ce - C) - Ve*C*C/(Ke*Ke+C*C) )
+dh/dt = A*( Kd - (C + Kd)*h )
+
+Ce = (Ct - C)/sigma
+
+#
+# The parameters
+# I = uM
+par I=0.4
+# Ct = uM
+par Ct=2
+par fi=0.01
+# Vi = pL
+par Vi=4
+# L,P = pL/s
+par L=0.37
+par P=26640
+# C, Ce, I, Ki, Ka, Ke, Kd = uM 
+par Ki=1.0
+par Ka=0.4
+# Ve = aMol/s [sic]
+par Ve=400
+par Ke=0.2
+par A=0.5
+par Kd=0.4
+par sigma=0.185
+
+#
+# The initial conditions
+C(0)=0.2
+h(0)=0.8
+#
+aux Ce=Ce
+#
+@ TOTAL=30,DT=.02,xlo=0,xhi=2,ylo=0,yhi=1.5
+@ xplot=c,yplot=h
+@ dsmin=1e-5,dsmax=.1,parmin=-.5,parmax=.5,autoxmin=-.5,autoxmax=.5
+@ autoymax=.4,autoymin=-.5
+set vvst {xplot=c,yplot=h,xlo=0,xhi=1.5,ylo=0,yhi=1.5,total=100 \
+	dt=0.01,meth=qualrk}
+done

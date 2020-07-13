@@ -1,0 +1,61 @@
+# Morris-Lecar beta-cell (based on Utah model with kca instead of s)
+# parameters chosen to illustrate Chay-Keizer + ER
+# crac added
+
+init v=-65.0, n=0.00016, c=0.12, cer=90.0
+
+# equations
+dv/dt=(i + gl*(vl-v) + gk*n*(vk-v) - Ica(v) - Ikca(v,c) )/cm
+dn/dt=(ninf(v)-n)/tau(v)
+dc/dt=f*( (-alpha*ica(v) - kc*c) + jertot/lambdaer )
+# dc/dt=f*(-alpha*ica(v) - kc*c) + jertot/lambdaer 
+dcer/dt = -f*jertot/(lambdaer*sigmaer)
+
+par cstar=1.0
+# par lambdaer=250, perl=0.0005, sigmaer=0.04, kserca=0.4, epser=1
+# par lambdaer=200, perl=0.0008, sigmaer=0.032, kserca=0.6
+# par lambdaer=200, perl=0.0008, sigmaer=0.032, kserca=0.6
+par lambdaer=2, perl=0.0008, sigmaer=0.032, kserca=0.6
+# par lambdaer=200, sigmaer=0.032, kserca=0.6
+# par perl0=0.0008, perl1=0.08, tstep=40000
+# perl= perl0 + heav(t-tstep)*(perl1 - perl0)
+# to remove ER set epser to 0:
+par  epser=1
+
+jerp = kserca*c
+jerleak = perl*(cer - c)
+jertot = epser*(jerleak - jerp)
+
+minf(v)=.5*(1+tanh((v-v1)/v2))
+ninf(v)=.5*(1+tanh((v-v3)/v4))
+tau(v)=1/(phi*cosh((v-v3)/(2*v4)))
+#
+param gkcastar=100.0, auto=0, nh=1,
+param vk=-75, vl=-75, vca=25
+param i=0, gk=2700, gl=150, gca=1000, cm=5300
+param v1=-20.0, v2=24, v3=-16, v4=11.2, phi=0.035
+param gkca=2000.0, kd=5.0
+# Ikca
+ikca(v,c) = auto*gkcastar*(v-vk) + (1-auto)*gkca/(1+(kd/c)^nh)*(v-vk)
+# Calcium Handling
+par alpha=4.50e-6, kc=0.15, f=0.01
+
+ica(v) = gca*minf(v)*(v-vca)
+
+par vmin=-72, vmax=0, tfinal=40000
+theta = vmin + t*(vmax - vmin)/tfinal
+
+# track some currents
+aux Condkca=gkca/(1+(kd/c)^nh)
+aux Ica=gca*minf(V)*(V-Vca)
+aux Ik=gk*n*(V-Vk)
+aux Curkca=Ikca(v,c)
+aux zee = (i+gl*(vl-theta)+gk*ninf(theta)*(vk-theta)- Ica(theta) )/(gkca*(theta - vk)/kd)
+aux null = (-f*alpha*ica(theta) + Perl*cer/lambdaer)/(f*kc + (Perl + kserca)/lambdaer)
+aux theta=theta
+
+@ meth=cvode, atol=1.0e-6, tol=1.0e-6, dt=10.0, total=40000, maxstor=10000
+@ xp=t, yp=v, bound=100000000
+@ xlo=0, xhi=40000, ylo=-70, yhi=-20
+
+done

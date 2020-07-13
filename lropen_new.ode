@@ -1,0 +1,57 @@
+#  Li-Rinzel open-cell model .ode file.
+
+# Dimensional version corresponding to Eqs. 5.48, 5.50, 5.51
+
+# Used for Figs. 8, 9, and 10B (bifurcation diagrams and nullclines)
+
+# The equations
+
+dC/dt = fi/Vi*( (L + P*( (I*C*h)/( (I+Ki)*(C+Ka) ) )^3 )*(Ce - C) - Ve*C*C/(Ke*Ke+C*C) + eps*(Jin - Vp*C*C/(Kp*Kp + C*C)) )
+
+dh/dt = A*( Kd - (C + Kd)*h )
+
+dCt/dt = fi/Vi*eps*(Jin - Vp*C*C/(Kp*Kp + C*C))
+
+Ce = (Ct - C)/sigma
+
+#
+# The parameters
+# Jin = aMol/s
+par Jin=1200
+par fi=0.01
+# Vi = pL
+par Vi=4
+# L,P = pL/s
+par L=0.37
+par P=26640
+# I, C, Ce, Ct,I, Ki, Ka, Ke, Kd, Kp = uM 
+par I=0.9
+par Ki=1.0
+par Ka=0.4
+# Ve, Vp = aMol/s [sic]
+par Ve=400
+par Ke=0.2
+par A=0.5
+par Kd=0.4
+# sigma,eps, fi = unitless
+par sigma=0.185
+par eps=0.01
+par Vp=2000
+par Kp=0.3
+
+
+#
+# The initial conditions
+C(0)=0.2
+h(0)=0.8
+Ct(0)=4.0
+#
+aux Ce=Ce
+#
+@ TOTAL=300,DT=0.02,xlo=0,xhi=2,ylo=0,yhi=1.5
+@ xplot=t,yplot=C
+@ dsmin=1e-5,dsmax=.1,parmin=-.5,parmax=.5,autoxmin=-.5,autoxmax=.5
+@ autoymax=.4,autoymin=-.5
+set vvst {xplot=c,yplot=h,xlo=0,xhi=1.5,ylo=0,yhi=1.5,total=100 \
+	dt=0.01,meth=qualrk}
+done

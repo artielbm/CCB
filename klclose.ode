@@ -1,0 +1,36 @@
+#Keizer/Leslie: closed cell model
+# Used for fig. 5.4a, b.  Use Cf = 1.8, 2.2, 3.2 for 5.4a.
+
+
+% XPP parameters
+@ meth=cvode, dtmax=1, dt=0.05, total=3000, maxstor=1000000
+@ bounds=100000000, xp=c,  yp=w, toler=1.0e-6, atoler=1.0e-6
+@ xlo=0, xhi=3, ylo=0, yhi=3, nmesh=80
+
+
+C(0)=0.2, w(0)=0.1
+
+params fi=0.01,k3=0.2
+params ka=0.4,kb=0.6,kc=0.1,kcm=0.01
+#orginal values
+#params kap=1500, kam=28.8, kbp=1500, kbm=385.9, kcp=1.75, kcm=0.175
+
+#original small store
+#params v1=5,v2=0.15,Cf=1.2,c1=0.02,v3=100
+params v3=100,v13=0.05,v23=0.002,Cf=1.8,c1=0.02
+
+#original large store
+#params v1=40,v2=0.5,Cf=10,c1=0.15,v3=1000
+#params v3=1000,v13=0.04,v23=0.0005,Cf=10,c1=0.15
+
+winf=(1+(ka/C)^4+(C/kb)^3)/(1+(1/kc)+(ka/C)^4+(C/kb)^3)
+Cas=(Cf-C)/c1
+tau(winf)=winf/kcm
+R=w*(1+(C/kb)^3)/(1+(ka/C)^4 + (C/kb)^3)
+
+dC/dt=fi*v3*((v13*R+v23)*(Cas-C)-C^2/(C^2+k3^2))
+dw/dt=(winf-w)/tau(winf)
+
+aux R=w*(1+(C/kb)^3)/(1+(ka/C)^4 + (C/kb)^3)
+
+done 

@@ -1,0 +1,68 @@
+# The Morris-Lecar + Li-Rinzel model .ode file.
+
+# PM equations
+V'= (-I_k - I_ca - I_kca)/Cm
+n'= (ninf(v)-n)/tau(v)
+
+# PM functions
+minf(V)=.5*(1+tanh((V-V1)/V2))
+ninf(V)=.5*(1+tanh((V-V3)/V4))
+tau(V)= 1/(phi*cosh((V-V3)/(2*V4)))
+I_ca=gca*minf(V)*(V-Vca)
+I_k=gk*n*(V-Vk)
+I_kca=gkca*(V-Vk)*C**4/(C**4+Kca**4)
+
+# PM parameters
+# units: V = mV; Kca = uM; Cm = uF/cm^2; g = uS/cm^2; phi = 1/s 
+params Vk=-85,Vca=120,Kca=0.5,Cm=1
+params gk=20,gca=20,gkca=8,phi=12
+params V1=-3,V2=30,V3=-20,V4=30
+
+# ER equations
+dC/dt = fi/Vi*( (L + P*( (I*C*h)/( (I+Ki)*(C+Ka) ) )^3 )*(Ce - C) - Ve*C*C/(Ke*Ke+C*C) + eps*(-alpha*I_ca - Vp*C*C/(Kp*Kp + C*C)) )
+
+dh/dt = A*( Kd - (C + Kd)*h )
+
+dCt/dt = fi/Vi*eps*(-alpha*I_ca - Vp*C*C/(Kp*Kp + C*C))
+
+Ce = (Ct - C)/sigma
+
+# ER parameters
+par fi=0.01
+# Vi = pL
+par Vi=4
+# L,P = pL/s
+par L=1.48
+par P=2960
+# I, C, Ce, Ct,I, Ki, Ka, Ke, Kd, Kp = uM 
+par I=0.9
+par Ki=0.0
+par Ka=0.4
+# Ve, Vp = aMol/s [sic]
+par Ve=480
+par Ke=0.2
+par A=2.0
+par Kd=0.4
+# sigma,eps, fi = unitless
+par sigma=0.185
+par eps=0.01
+par Vp=400
+par Kp=0.3
+# alpha = aMol cm^2/nC (approximately Acell/(2*Faraday) in those units)
+par alpha=0.2
+
+# The initial conditions
+V(0)=-36
+n(0)=0.2
+C(0)=0.16
+h(0)=0.8
+Ct(0)=1.6
+
+aux Ce=Ce
+aux jin=-alpha*I_ca
+
+@ TOTAL=30,DT=0.002,xlo=0,xhi=30,ylo=-90,yhi=30
+@ xplot=t,yplot=v
+@ bounds=100000000,maxstor=10000000
+
+done

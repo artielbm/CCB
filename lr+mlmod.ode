@@ -1,0 +1,49 @@
+# The Morris-Lecar + Li-Rinzel model .ode file.
+#  A simple membrane oscillator.  
+#
+# The equations
+v'= (-i_k-i_ca-i_kca)/cm
+w'= lamn(v)*(ninf(v)-w)
+c'= (l+p*act(c)*inh(h))*(a-cp*c)-erp(c)+pmf(c)
+h'= a2*(din-(c+din)*h)
+a'= pmf(c)
+#
+minf(v)=.5*(1+tanh((v-v1)/v2))
+ninf(v)=.5*(1+tanh((v-v3)/v4))
+lamn(v)= phi*cosh((v-v3)/(2*v4))
+i_ca=gca*minf(v)*(v-vca)
+i_k=gk*w*(v-vk)
+i_kca=gkca*(v-vk)*c**4/(c**4+kca**4)
+#
+aux cer=(a-c)/(cp-1)
+# The parameters
+params vk=-85,vca=120,kca=0.5,cm=1
+params gk=20,gca=20,gkca=8,phi=12
+params v1=-3,v2=30,v3=-20,v4=30
+#
+act(c)=(c/(c+dac))**3
+inh(h)=h*h*h
+erp(c)=ver*c*c/(ker*ker+c*c)
+pmp(c)=vpm*c*c/(kpm*kpm+c*c)
+pmf(c)=eps*(-alf*i_ca-pmp(c))
+#
+params l=0.02,p=40,cp=1.185,a2=2
+params dac=0.4,din=0.4,ver=1.2,vpm=1,ker=0.2,kpm=0.3
+params eps=0.01,alf=0.0005
+#
+# The initial conditions
+v(0)=-60
+w(0)=0.01
+c(0)=0.2
+h(0)=0.8
+a(0)=2
+#
+@ TOTAL=40,DT=.002,xlo=0,xhi=40,ylo=-100,yhi=40
+@ xplot=t,yplot=v
+@ bounds=100000000,maxstor=10000000
+@ xplot=t,yplot=v
+@ dsmin=1e-5,dsmax=.1,parmin=-.5,parmax=.5,autoxmin=-.5,autoxmax=.5
+@ autoymax=.4,autoymin=-.5
+set vvst {xplot=t,yplot=v,xlo=0,xhi=40,ylo=-100,yhi=40,total=40 \
+	dt=.005,meth=gear}
+done

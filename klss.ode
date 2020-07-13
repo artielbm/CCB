@@ -1,0 +1,30 @@
+#Steady states for Equations 1-4 for Keizer-Levine
+# Plot Plat as well to complete fig. 5.3b
+
+c(0)=0
+
+c'=1
+
+params kap=1500, kam=28.8, kbp=1500, kbm=385.9, kcp=1.75, kcm=0.1
+% Here I am using the KL value, but I really get 0.917 = winf(0.1)
+params w0=0.963 
+
+% NB: KL ka^4 = my ka, KL kb^3 = my kb
+ka=kam/kap
+kb=kbm/kbp
+kc=kcm/kcp
+
+peak(c) = winf(0.1)*(1 + c^3/kb)/(1 + ka/c^4 + c^3/kb)
+plat(c) = (1 + c^3/kb)/(1 + ka/c^4 + c^3/kb + 1/kc)
+winf(c) = (1 + ka/c^4 + c^3/kb)/(1 + ka/c^4 + c^3/kb + 1/kc)
+tauw(c) = winf(c)/kcm
+
+aux Peak = peak(c)
+aux Plat = plat(c)
+aux Winf = winf(c)
+aux Tauw = tauw(c)
+
+
+@ dt=0.05, total=2.5, njmp=1, yp=Peak, xlo=0.0, xhi=2.5, ylo=0.0, yhi=1.0, maxstor=10000
+
+done 
