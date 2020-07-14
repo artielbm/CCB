@@ -1,4 +1,4 @@
-#### These are the xpp files for Chapter 5,  "Whole Cell Models," by A. Sherman, Y.-X. Li, and J. Keizer in "Computational Cell Biology", C. Fall, E. Marland, J. Wagner, and J. Tyson , eds., Springer-Verlag, New York, pp. 101 - 139, 2002.
+#### These are the xpp files for Chapter 5,  "Whole Cell Models," by A. Sherman, Y.-X. Li, and J. Keizer in "Computational Cell Biology", C. Fall, E. Marland, J. Wagner, and J. Tyson , eds., Springer-Verlag, New York, pp. 101 - 139, 2002. [[Publisher site]](https://www.springer.com/us/book/9780387953694)
 
 #### Below are listed the files that reproduce each figure:
 
