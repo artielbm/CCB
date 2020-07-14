@@ -2,9 +2,9 @@
 
 #### Below are listed the files that reproduce each figure:
 
-* Figure 5.3a: [Keizer-Levine Model, klstates.ode](klstates.ode) 
+* Figure 5.3a: [Keizer-Levine Model, receptor states, klstates.ode](klstates.ode) 
 
-* Figure 5.3b: [Keizer-Levine Steady States, klss.ode](klss.ode)
+* Figure 5.3b: [Keizer-Levine Model, steady state, klss.ode](klss.ode)
 
 * Figure 5.4: [Keizer-Levine Closed Cell Model, klclose.ode](klclose.ode)
 
