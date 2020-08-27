@@ -1,3 +1,4 @@
+# Adapted from J. Keizer and G. Magnus. Biophys J. 1989 56(2):229-42.
 # Morris-Lecar beta-cell (based on Utah model with kca instead of s)
 
 init v=-65.0, n=0.00016, c=0.2, d=0.5
