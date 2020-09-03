@@ -1,5 +1,5 @@
-#Keizer/Leslie: closed cell model
-# Used for fig. 5.4a, b.  Use Cf = 1.8, 2.2, 3.2 for 5.4a.
+#Keizer/Levine: closed cell model
+# Used for fig. 5.7a  Use Cf = 1.8, 2.2, 3.2
 
 
 % XPP parameters
