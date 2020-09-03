@@ -1,5 +1,5 @@
 #Steady states for Equations 1-4 for Keizer-Levine
-# Plot Plat as well to complete fig. 5.3b
+# Plot Plat as well to complete fig. 5.6b
 
 c(0)=0
 
